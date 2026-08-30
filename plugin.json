@@ -1,0 +1,10 @@
+{
+  "id": "org.extera.discord_pulse",
+  "name": "Discord Pulse",
+  "version": "1.0.0",
+  "versionCode": 1,
+  "author": "psychocursive",
+  "description": "Мониторинг голосовых каналов и онлайна Discord",
+  "minApi": 1,
+  "mainClass": "org.extera.discord.DiscordVoicePlugin"
+}
