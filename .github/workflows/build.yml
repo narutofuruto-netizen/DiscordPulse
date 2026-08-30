@@ -17,22 +17,21 @@ jobs:
       - name: Compile and Package Plugin
         run: |
           mkdir -p build/classes
-          # Используем встроенный Android SDK на GitHub Runner
           ANDROID_JAR=$(find $ANDROID_HOME/platforms -name "android.jar" | sort -V | tail -n 1)
           D8_TOOL=$(find $ANDROID_HOME/build-tools -name "d8" | sort -V | tail -n 1)
 
-          # Компиляция Java исходников
+          # Компиляция Java
           javac -cp "$ANDROID_JAR" $(find . -name "*.java") -d build/classes/
 
-          # Сборка classes.dex
+          # Сборка DEX
           $D8_TOOL $(find build/classes -name "*.class") --output ./
 
-          # Упаковка в готовый плагин
-          zip discord-pulse.plugin plugin.json classes.dex
+          # Упаковка без сжатия (-0), чтобы парсер метаданных читал файл корректно
+          zip -0 discord-pulse.plugin plugin.json classes.dex
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: discord-pulse.plugin
+          name: discord-pulse-plugin-file
           path: discord-pulse.plugin
           
