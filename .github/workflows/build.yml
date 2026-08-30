@@ -16,7 +16,7 @@ jobs:
 
       - name: Setup Android Build Tools
         run: |
-          sudo apt-get update && sudo apt-get install -y zip kotlin
+          sudo apt-get update && sudo apt-get install -y zip
           wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O tools.zip
           mkdir -p android-sdk/cmdline-tools
           unzip -q tools.zip -d android-sdk/cmdline-tools
@@ -27,8 +27,8 @@ jobs:
       - name: Compile Plugin
         run: |
           mkdir -p build/classes
-          kotlinc -cp "android-sdk/platforms/android-34/android.jar" src/DiscordVoicePlugin.kt -d build/classes/
-          android-sdk/build-tools/34.0.0/d8 build/classes/org/extera/discord/*.class --output ./
+          javac -cp "android-sdk/platforms/android-34/android.jar" src/*.java -d build/classes/
+          android-sdk/build-tools/34.0.0/d8 $(find build/classes -name "*.class") --output ./
           zip discord-pulse.plugin plugin.json classes.dex
 
       - name: Upload .plugin
