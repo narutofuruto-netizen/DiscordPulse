@@ -1,6 +1,9 @@
 name: Build Discord Pulse
 on: [push, workflow_dispatch]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,18 +23,17 @@ jobs:
           ANDROID_JAR=$(find $ANDROID_HOME/platforms -name "android.jar" | sort -V | tail -n 1)
           D8_TOOL=$(find $ANDROID_HOME/build-tools -name "d8" | sort -V | tail -n 1)
 
-          # Компиляция Java
           javac -cp "$ANDROID_JAR" $(find . -name "*.java") -d build/classes/
-
-          # Сборка DEX
           $D8_TOOL $(find build/classes -name "*.class") --output ./
-
-          # Упаковка без сжатия (-0), чтобы парсер метаданных читал файл корректно
           zip -0 discord-pulse.plugin plugin.json classes.dex
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+      - name: Create Release with Direct File
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/heads/')
         with:
-          name: discord-pulse-plugin-file
-          path: discord-pulse.plugin
+          tag_name: latest
+          name: Discord Pulse Latest
+          files: discord-pulse.plugin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
