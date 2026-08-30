@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "versionCode": 1,
   "author": "psychocursive",
-  "description": "Мониторинг голосовых каналов и онлайна Discord",
+  "description": "Discord Voice Scanner and Online Tracker",
   "minApi": 1,
   "mainClass": "org.extera.discord.DiscordVoicePlugin"
 }
